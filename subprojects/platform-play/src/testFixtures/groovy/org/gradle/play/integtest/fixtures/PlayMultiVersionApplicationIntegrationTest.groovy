@@ -35,7 +35,7 @@ abstract class PlayMultiVersionApplicationIntegrationTest extends PlayMultiVersi
         executer.withPluginRepositoryMirror()
     }
 
-    static String playPlatformConfiguration(String version) {
+    String playPlatformConfiguration(String version) {
         return """
         allprojects {
             model {

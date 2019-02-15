@@ -89,7 +89,7 @@ abstract class AbstractPlayReloadIntegrationTest extends AbstractMultiVersionPla
             }
 
             gradle.taskGraph.afterTask { task ->
-                if (task.path != ":compilePlayBinaryScala") {
+                if (!(task.path in [":compilePlayBinaryScala", ":compileScala"])) {
                     return
                 }
 

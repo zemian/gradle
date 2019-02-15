@@ -20,30 +20,16 @@ import org.gradle.integtests.fixtures.SourceFile
 import org.gradle.play.integtest.fixtures.PlayApp
 import org.gradle.util.VersionNumber
 
-import static org.gradle.play.integtest.fixtures.Repositories.*
-
 class WithFailingTestsApp extends PlayApp {
-    List<SourceFile> appSources
-    List<SourceFile> viewSources
-    List<SourceFile> confSources
     List<SourceFile> testSources
-
-    @Override
-    SourceFile getGradleBuild() {
-        def gradleBuild = sourceFile("", "build.gradle", "basicplayapp")
-        def gradleBuildWithRepositories = gradleBuild.content.concat """
-            allprojects {
-                ${PLAY_REPOSITORIES}
-            }
-        """
-        return new SourceFile(gradleBuild.path, gradleBuild.name, gradleBuildWithRepositories)
-    }
 
     WithFailingTestsApp(VersionNumber version){
         super(version)
-        appSources = sourceFiles("app", "basicplayapp");
-        viewSources = sourceFiles("app/views", "basicplayapp");
-        confSources = sourceFiles("conf", "shared") + sourceFiles("conf", "basicplayapp")
-        testSources = sourceFiles("test") + sourceFiles("test", "basicplayapp")
+        testSources = sourceFiles("test") + sourceFiles("test", "withfailingtestsapp")
+    }
+
+    @Override
+    String getName() {
+        return "basicplayapp"
     }
 }

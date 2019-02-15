@@ -26,15 +26,12 @@ class AdvancedPlayApp extends PlayApp {
     AdvancedPlayApp(VersionNumber version) {
         super(version)
     }
+
     @Override
-    SourceFile getGradleBuild() {
-        def gradleBuild = super.getGradleBuild()
-        def gradleBuildWithRepositories = gradleBuild.content.concat """
-            allprojects {
-                ${GRADLE_JS_REPOSITORY}
-            }
+    String getRepositories() {
+        return super.getRepositories() + """
+            ${GRADLE_JS_REPOSITORY}
         """
-        return new SourceFile(gradleBuild.path, gradleBuild.name, gradleBuildWithRepositories)
     }
 
     @Override

@@ -18,7 +18,6 @@ package org.gradle.play.integtest.fixtures
 
 import org.gradle.integtests.fixtures.executer.ExecutionResult
 import org.gradle.launcher.continuous.Java7RequiringContinuousIntegrationTest
-import org.gradle.test.fixtures.file.TestFile
 
 import static org.gradle.play.integtest.fixtures.PlayMultiVersionRunApplicationIntegrationTest.java9AddJavaSqlModuleArgs
 
@@ -31,19 +30,12 @@ abstract class AbstractPlayContinuousBuildIntegrationTest extends Java7Requiring
         buildTimeout = 90
     }
 
-    TestFile getPlayRunBuildFile() {
-        buildFile
-    }
-
     def writeSources() {
         playApp.writeSources(testDirectory)
-
-        playRunBuildFile << """
-            model {
-                tasks.runPlayBinary {
-                    httpPort = 0
-                    ${java9AddJavaSqlModuleArgs()}
-                }
+        buildFile << """
+            tasks.withType(PlayRun) {
+                httpPort = 0
+                ${java9AddJavaSqlModuleArgs()}
             }
         """
 
@@ -65,5 +57,19 @@ abstract class AbstractPlayContinuousBuildIntegrationTest extends Java7Requiring
     @Override
     protected ExecutionResult succeeds(String... tasks) {
         return super.succeeds(tasks)
+    }
+
+    String playPlatformConfiguration(String version) {
+        return """
+        allprojects {
+            model {
+                components {
+                    play {
+                        targetPlatform "play-${version}"
+                    }
+                }
+            }
+        }
+        """
     }
 }

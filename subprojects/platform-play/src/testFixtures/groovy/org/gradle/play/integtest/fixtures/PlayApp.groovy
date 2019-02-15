@@ -41,15 +41,22 @@ abstract class PlayApp {
         return appSources + testSources + viewSources + assetSources + confSources + otherSources
     }
 
-    SourceFile getGradleBuild() {
-        def buildFileName = oldVersion ? "build.gradle.old" : "build.gradle"
-        def gradleBuild = sourceFile("", buildFileName)
-        def gradleBuildWithRepositories = gradleBuild.content.concat """
+    List<SourceFile> getBuildFiles() {
+        def builtInPlayBuildFile = sourceFile("", oldVersion ? "build.gradle.old" : "build.gradle")
+        def externalPlayBuildFile = sourceFile("", "build-external.gradle")
+        def repositoriesContent = """
             allprojects {
-                ${PLAY_REPOSITORIES}
+                ${repositories}
             }
         """
-        return new SourceFile(gradleBuild.path, "build.gradle", gradleBuildWithRepositories)
+        return [
+            new SourceFile(builtInPlayBuildFile.path, "build.gradle", builtInPlayBuildFile.content + repositoriesContent),
+            new SourceFile(externalPlayBuildFile.path, "build-external.gradle", externalPlayBuildFile.content + repositoriesContent)
+        ]
+    }
+
+    String getRepositories() {
+        "${PLAY_REPOSITORIES}"
     }
 
     List<SourceFile> getAssetSources() {
@@ -86,7 +93,7 @@ abstract class PlayApp {
     }
 
     void writeSources(TestFile sourceDir) {
-        gradleBuild.writeToDir(sourceDir)
+        buildFiles*.writeToDir(sourceDir)
         for (SourceFile srcFile : allFiles) {
             srcFile.writeToDir(sourceDir)
         }
