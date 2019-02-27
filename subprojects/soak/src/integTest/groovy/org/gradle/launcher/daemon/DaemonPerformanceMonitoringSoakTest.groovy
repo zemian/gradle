@@ -226,7 +226,7 @@ class DaemonPerformanceMonitoringSoakTest extends DaemonMultiJdkIntegrationTest 
             } catch(OutOfMemoryError e) {
                 if (e.message == "GC overhead limit exceeded") {
                     // TeamCity recognizes this message as build failures if it occurs in build log
-                    throw new IllegalStateException("GC_overhead_limit_exceeded", e)
+                    throw new OutOfMemoryError("GC_overhead_limit_exceeded")
                 } else {
                     throw e
                 }
