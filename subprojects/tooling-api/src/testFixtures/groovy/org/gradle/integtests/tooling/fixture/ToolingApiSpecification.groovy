@@ -146,7 +146,7 @@ abstract class ToolingApiSpecification extends Specification {
         toolingApi.withConnection(connector, cl)
     }
 
-    def connector() {
+    GradleConnector connector() {
         toolingApi.connector()
     }
 
