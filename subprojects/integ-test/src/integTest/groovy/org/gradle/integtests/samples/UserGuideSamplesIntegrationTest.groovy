@@ -18,7 +18,6 @@ package org.gradle.integtests.samples
 
 import org.gradle.cache.internal.DefaultGeneratedGradleJarCache
 import org.gradle.integtests.fixtures.executer.IntegrationTestBuildContext
-import org.gradle.integtests.fixtures.executer.MoreMemorySampleModifier
 import org.gradle.integtests.fixtures.logging.ArtifactResolutionOmittingOutputNormalizer
 import org.gradle.integtests.fixtures.logging.DependencyInsightOutputNormalizer
 import org.gradle.integtests.fixtures.logging.NativeComponentReportOutputNormalizer
@@ -48,7 +47,7 @@ import org.junit.runner.RunWith
         PlayComponentReportOutputNormalizer,
         DependencyInsightOutputNormalizer
 ])
-@SampleModifiers([SetMirrorsSampleModifier, MoreMemorySampleModifier])
+@SampleModifiers([SetMirrorsSampleModifier])
 class UserGuideSamplesIntegrationTest {
 
     /*
